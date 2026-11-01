@@ -1,0 +1,50 @@
+{
+  "name": "aquatrace",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "prisma generate && next build && node scripts/prepare-standalone.mjs",
+    "start": "node --env-file-if-exists=.env scripts/start.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "test:integration": "tsx --env-file=.env tests/integration.ts",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "tsx --env-file=.env prisma/seed.ts",
+    "demo:stream": "tsx --env-file=.env scripts/demo-stream.ts",
+    "admin:create": "tsx --env-file=.env scripts/create-admin.ts",
+    "format": "prettier --write app components lib prisma/*.ts scripts/*.ts tests *.json *.mjs *.ts *.md docs/*.md"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.0",
+    "next": "16.4.2",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "recharts": "^3.7.0",
+    "leaflet": "^1.9.4",
+    "react-leaflet": "^5.0.0",
+    "lucide-react": "^0.577.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.21",
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@tailwindcss/postcss": "^4.2.1",
+    "tailwindcss": "^4.2.1",
+    "eslint": "^9.39.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "prisma": "6.19.0",
+    "typescript-eslint": "^8.72.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "prettier": "^3.8.0"
+  },
+  "overrides": {
+    "deepmerge-ts": "8.0.2",
+    "effect": "^3.20.0"
+  }
+}

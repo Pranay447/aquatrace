@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+enum Role {
+  USER
+  ADMIN
+}
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  name String
+  passwordHash String
+  role Role @default(USER)
+  adminRequested Boolean @default(false)
+  createdAt DateTime @db.Timestamptz(3) @default(now())
+  sessions Session[]
+}
+model Session {
+  id String @id
+  userId String
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  expiresAt DateTime @db.Timestamptz(3)
+  @@index([expiresAt])
+}
+model Sensor {
+  id String @id
+  name String
+  network String @default("East River")
+  latitude Float
+  longitude Float
+  mac String @unique
+  connectionType String @default("Wi-Fi")
+  intervalSeconds Int @default(5)
+  flowOrder Int
+  enabled Boolean @default(true)
+  demo Boolean @default(false)
+  battery Float?
+  lastSeen DateTime? @db.Timestamptz(3)
+  firmwareVersion String?
+  thresholds Json?
+  createdAt DateTime @db.Timestamptz(3) @default(now())
+  readings Reading[]
+  alerts Alert[]
+}
+model Reading {
+  id String @id @default(cuid())
+  deviceId String
+  sensor Sensor @relation(fields:[deviceId],references:[id],onDelete:Cascade)
+  timestamp DateTime @db.Timestamptz(3)
+  receivedAt DateTime @db.Timestamptz(3) @default(now())
+  turbidityNtu Float
+  tdsPpm Float
+  temperatureC Float
+  turbidityAdc Int?
+  tdsAdc Int?
+  firmwareVersion String?
+  @@unique([deviceId,timestamp])
+  @@index([deviceId,timestamp(sort:Desc)])
+}
+model Alert {
+  id String @id @default(cuid())
+  deviceId String
+  sensor Sensor @relation(fields:[deviceId],references:[id],onDelete:Cascade)
+  kind String
+  severity String
+  state String @default("OPEN")
+  message String
+  // One ongoing incident per device and kind; resolved incidents release this key.
+  activeKey String? @unique
+  createdAt DateTime @db.Timestamptz(3) @default(now())
+  updatedAt DateTime @db.Timestamptz(3) @updatedAt
+  acknowledgedBy String?
+  resolvedBy String?
+  @@index([state,createdAt])
+}
+model Setting {
+  id String @id @default("network")
+  thresholds Json
+  staleSeconds Int @default(60)
+}
+model AuditLog {
+  id String @id @default(cuid())
+  actorId String
+  action String
+  target String
+  details Json
+  createdAt DateTime @db.Timestamptz(3) @default(now())
+}
+model RateLimit {
+  id String @id
+  count Int @default(1)
+  resetAt DateTime @db.Timestamptz(3)
+  @@index([resetAt])
+}

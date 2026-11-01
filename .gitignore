@@ -1,0 +1,15 @@
+node_modules/
+.next/
+.env
+.env.*
+!.env.example
+.npm-cache/
+tmp/
+*.tsbuildinfo
+firmware/secrets.h
+firmware/**/secrets.h
+.local-db/
+playwright-report/
+aquatrace-cloudrun.zip
+aquatrace-esp32-gpio34.zip
+aquatrace-esp32-local.zip

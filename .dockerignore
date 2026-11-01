@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.env*
+!.env.example
+.npm-cache
+tmp
+.local-db
+firmware/secrets.h
+firmware/**/secrets.h
+*.tsbuildinfo
