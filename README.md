@@ -1,5 +1,11 @@
 # AquaTrace
 
+ESP32 water-quality monitoring prototype with temperature-compensated TDS, sensor history, mapping and threshold alerts. The current local firmware reads TDS on GPIO34 and a DS18B20 temperature probe on GPIO4.
+
+![AquaTrace sensor readings page showing S04 TDS history](docs/sensor-readings.jpg)
+
+*S04 sensor readings page with the 30-day history range selected. The device was offline when this screenshot was captured; the chart shows previously recorded readings.*
+
 **Local laptop + Pixel hotspot demonstration:** start with [LOCAL_WIFI_START_HERE.md](docs/LOCAL_WIFI_START_HERE.md). Use the separate `firmware/aquatrace_tds_local/` sketch and `scripts/start-local-demo.ps1`; no Cloud Run, certificate or internet time server is required during the demo.
 
 **TDS-only ESP32 on GPIO34:** follow [the complete Wi-Fi + Cloud Run walkthrough](docs/ESP32_TDS_WIFI_CLOUD_RUN.md). The separate `firmware/aquatrace_tds_demo/` sketch uploads measured TDS with explicitly simulated turbidity and assumed temperature. It does not require a turbidity probe or DS18B20. The original full-sensor sketch remains available.
